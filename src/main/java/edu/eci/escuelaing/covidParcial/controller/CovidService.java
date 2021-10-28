@@ -7,8 +7,6 @@ package edu.eci.escuelaing.covidParcial.controller;
 
 import edu.eci.escuelaing.covidParcial.services.CovidServices;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,13 +25,21 @@ public class CovidService {
     @Autowired
     CovidServices covidService;
     
+    @RequestMapping(value = "covid", method = RequestMethod.GET)
+    public ResponseEntity<?> getCovid(@PathVariable(name="country") String country) {
+        try {
+            return new ResponseEntity<>(covidService.getGeneralCovid(), HttpStatus.ACCEPTED);
+        } catch(Exception e) {
+            return new ResponseEntity<>("Error al buscar pais", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
     @RequestMapping(value = "covid/{country}", method = RequestMethod.GET)
-    public ResponseEntity<?> getWeatherByCity(@PathVariable(name="country") String country) {
+    public ResponseEntity<?> getCovidByCountry(@PathVariable(name="country") String country) {
         try {
             return new ResponseEntity<>(covidService.getCovidByCountry(country), HttpStatus.ACCEPTED);
         } catch(Exception e) {
             return new ResponseEntity<>("Error al buscar pais", HttpStatus.BAD_REQUEST);
         }
     }
-    
 }
